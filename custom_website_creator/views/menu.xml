@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+            id="website_creator_menu"
+            name="website_creator"
+            web_icon="custom_website_creator,static/description/banner.png"
+            sequence="25"/>
+</odoo>

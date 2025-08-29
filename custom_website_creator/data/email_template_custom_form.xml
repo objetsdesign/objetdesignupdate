@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<odoo>
+        <record id="email_template_custom_form" model="mail.template">
+            <field name="name">Confirmation Request Email</field>
+            <field name="email_from">${(user.email or 'info@example.com')}</field>
+            <field name="subject">Access Request Confirmation</field>
+            <field name="body_html">
+
+                <span style="font-weight:bold;"
+                      t-out="format_amount(object.amount_total, object.currency_id) or ''">
+                    <p>Dear</p>
+                    <p>Thank you for your access request! We have received your information and will contact you soon.</p>
+                    <p>Best regards,</p>
+                </span>
+            </field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+        </record>
+</odoo>

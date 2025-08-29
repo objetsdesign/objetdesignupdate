@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="crm_lead_view_form_inherit" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook/page[@name='internal_notes']" position="after">
+                <page string="Produits">
+                    <field name="lead_line_ids">
+                        <list editable="bottom">
+                            <field name="product_id"/>
+                            <field name="product_uom_qty"/>
+                            <field name="price_unit"/>
+                            <field name="price_subtotal"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

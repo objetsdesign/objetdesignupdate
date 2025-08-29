@@ -1,0 +1,282 @@
+# Translation of Odoo Server.
+# This file contains the translation for the module custom_website_creator.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"POT-Creation-Date: 2025-03-03 12:00+0000\n"
+"PO-Revision-Date: 2025-03-03 12:00+0000\n"
+"Last-Translator: Ichrak\n"
+"Language-Team: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.confirmation_page
+msgid "Thank you for your quote request"
+msgstr "Merci pour votre demande de devis"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.confirmation_page
+msgid "We have received your request and will contact you soon."
+msgstr "Nous avons bien reçu votre demande et nous vous contacterons bientôt."
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.confirmation_page
+msgid "We have received your request and will contact you soon."
+msgstr "Nous avons bien reçu votre demande et nous vous contacterons bientôt."
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.confirmation_page
+msgid "Back to home"
+msgstr "Retour à l'accueil"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.product_inherit
+msgid "Add to cart"
+msgstr "Ajouter au panier"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.product_inherit
+msgid "Request a quote"
+msgstr "Demander un devis"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.product_inherit
+msgid "Login"
+msgstr "Se connecter"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.delivery_form_inherit
+msgid "Choose a delivery method"
+msgstr "Choisissez un mode de livraison"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.login_inherit
+msgid "Become a customer"
+msgstr "Devenir client"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.login_inherit
+msgid "Welcome to Our Platform!"
+msgstr "Bienvenue sur notre plateforme !"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.login_inherit
+msgid "Please enter your credentials to log in."
+msgstr "Veuillez saisir vos identifiants pour vous connecter."
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form
+msgid "Access request form"
+msgstr "Formulaire de demande d'accès"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form
+msgid "Fill in the form below to request access. Our team will review your request and get back to you as soon as possible."
+msgstr "Remplissez le formulaire ci-dessous pour demander l'accès. Notre équipe examinera votre demande et vous répondra dans les plus brefs délais."
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form
+msgid "Name"
+msgstr "Nom"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form
+msgid "Email"
+msgstr "Email"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form
+msgid "Phone"
+msgstr "Téléphone"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form
+msgid "Send your access request"
+msgstr "Envoyez votre demande d'accès"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form
+msgid "Street and Number"
+msgstr "Rue et numéro"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form
+msgid "Apartment, suite, etc."
+msgstr "Appartement, suite, etc."
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form
+msgid "City"
+msgstr "Ville"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form
+msgid "Zip Code"
+msgstr "Code postal"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form
+msgid "Country"
+msgstr "Pays"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form_success
+msgid "Thank you for your request !"
+msgstr "Merci pour votre demande !"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form_success
+msgid "We will contact you soon."
+msgstr "Nous vous contacterons bientôt."
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.template_custom_form_success
+msgid "Back to home"
+msgstr "Retour à l'accueil"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.delivery_form_inherit
+msgid "No suitable delivery method could be found."
+msgstr "Aucun moyen de livraison adéquat n'a pu être trouvé."
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.cart_inherit_custom_website
+msgid "Quote Overview"
+msgstr "Aperçu le devis"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.cart_inherit_custom_website
+msgid "Order Overview"
+msgstr "Aperçu de la commande"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.cart_inherit_custom_website
+msgid "Additional information"
+msgstr "Informations supplémentaires"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.cart_inherit_custom_website
+msgid "Write a comment..."
+msgstr "Ecris un commentaire..."
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.delivery_address_row_inherit
+msgid "YOUR ADDRESS"
+msgstr "VOTRE ADRESSE"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.address_row_inherit
+msgid "Add address"
+msgstr "Ajouter une adresse"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.delivery_address_row_inherit
+msgid "DELIVERY ADDRESS"
+msgstr "ADRESSE DE LIVRAISON"
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.coupon_form_inherit
+msgid "Discount code..."
+msgstr "Code de remise..."
+
+#. module: custom_website_creator
+#: model_terms:ir.ui.view,arch_db:custom_website_creator.coupon_form_inherit
+msgid "Apply"
+msgstr "Appliquer"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "My personalised quotation"
+msgstr "Mon devis personnalisé"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Sign In"
+msgstr "Se connecter"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Check"
+msgstr "Vérifier"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Continue shopping"
+msgstr "Continuer les achats"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Confirmation"
+msgstr "Confirmation"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Validate the quote request"
+msgstr "Valider la demande de devis"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Back to cart"
+msgstr "Retour au panier"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Review Order"
+msgstr "Revoir la commande"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Checkout"
+msgstr "Passer à la caisse"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Delivery"
+msgstr "Livraison"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Confirm"
+msgstr "Confirmer"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Extra Info"
+msgstr "Informations supplémentaires"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Continue checkout"
+msgstr "Continuer le paiement"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Back to delivery"
+msgstr "Retour à la livraison"
+
+#. module: custom_website_creator
+#. odoo-python
+#: code:custom_website_creator/models/website.py:0
+msgid "Payment"
+msgstr "Paiement"

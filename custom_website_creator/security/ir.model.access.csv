@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_demande_devis_manager,demande.devis,model_demande_devis,base.group_system,1,1,1,1
+access_demande_devis_user,demande.devis.user,model_demande_devis,base.group_user,1,1,1,0
+access_demande_devis_line_manager,demande.devis.line,model_demande_devis_line,base.group_system,1,1,1,1
+access_crm_lead_manager,crm.lead,model_crm_lead,base.group_system,1,1,1,1
+access_crm_lead_line_manager,crm.lead.line,model_crm_lead_line,base.group_system,1,1,1,1
+access_crm_lead_line_user,crm.lead.line user,model_crm_lead_line,base.group_user,1,0,0,0
+access_crm_lead_portal,crm.lead.portal,model_crm_lead,base.group_portal,1,0,0,0
+access_crm_lead_line_portal,crm.lead.line.portal,model_crm_lead_line,base.group_portal,1,0,0,0

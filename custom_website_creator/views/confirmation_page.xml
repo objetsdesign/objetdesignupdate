@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="confirmation_page" name="Confirmation Devis">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5 text-center">
+                <h2>Thank you for your quote request</h2>
+                <p>We have received your request and will contact you soon.</p>
+                <a href="/" class="btn btn-primary">Back to home</a>
+            </div>
+        </t>
+    </template>
+</odoo>

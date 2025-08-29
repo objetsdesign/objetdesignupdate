@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <xpath expr="//body" position="inside">
+        <script type="text/javascript">
+            function showValidationPopup() {
+            const popup = document.getElementById('validationPopup');
+            if (popup) {
+            popup.style.display = 'block';
+            }
+            }
+
+            function closeValidationPopup() {
+            const popup = document.getElementById('validationPopup');
+            if (popup) {
+            popup.style.display = 'none';
+            }
+            }
+        </script>
+
+        <div id="validationPopup"
+             style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); z-index:1000;">
+            <div style="background:#fff; padding:30px; border-radius:8px; max-width:400px; margin:15% auto; text-align:center;">
+                <h5>⚠️ Attention</h5>
+                <p>Votre compte n'est pas encore validé.</p>
+                <button onclick="closeValidationPopup()" class="btn btn-secondary mt-3">Annuler</button>
+            </div>
+        </div>
+    </xpath>
+
+
+</odoo>

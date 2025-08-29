@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <template id="login_inherit" inherit_id="web.login">
+        <xpath expr="//div[@class='mb-3 field-login']" position="before">
+            <div class="mb-3 text-center">
+                <h4>Welcome to Our Platform!</h4>
+                <p>Please enter your credentials to log in.</p>
+            </div>
+            <br></br>
+        </xpath>
+
+        <xpath expr="//div[contains(@class, 'oe_login_buttons')]/button[@type='submit']" position="after">
+            <a href="/custom-form" class="btn btn-secondary">Become a customer</a>
+        </xpath>
+    </template>
+
+    <template id="template_custom_form" name="Custom Form Page">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="banner position-relative text-center text-white"
+                     style="background: url('/custom_website_creator/static/src/img/banner_image.jpeg') center/cover no-repeat; height: 275px;">
+                    <div class="overlay"
+                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5);"></div>
+                    <div class="container position-relative d-flex flex-column justify-content-center align-items-center h-100">
+                        <h1 class="mb-3">Access request form</h1>
+                        <p class="lead">Fill in the form below to request access. Our team will review your request and
+                            get back to you as soon as possible.
+                        </p>
+                        <a href="#custom-form-section" class="btn btn-light btn-lg mt-2">button</a>
+                    </div>
+                </div>
+
+
+                <form action="/custom-form/submit" method="post" class="mt-4">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" class="form-control" maxlength="200"
+                               required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="phone" id="phone" name="phone" class="form-control" required="required"/>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="street">Street and Number</label>
+                            <input type="text" id="street" name="street" class="form-control" required="required"/>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="street2">Apartment, suite, etc.</label>
+                            <input type="text" id="street2" name="street2" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <label for="city">City</label>
+                            <input type="text" id="city" name="city" class="form-control" required="required"/>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="zip">Zip Code</label>
+                            <input type="text" id="zip" name="zip" class="form-control" required="required"/>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="country_id">Country</label>
+                            <select id="country_id" name="country_id" class="form-control" required="required">
+                                <!--                                <option value="">Country...</option>-->
+                                <t t-foreach="request.env['res.country'].sudo().search([])" t-as="country">
+                                    <option t-att-value="country.id">
+                                        <t t-esc="country.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--                    <div class="row mt-3">-->
+                    <!--                        <div class="col-md-6">-->
+                    <!--                            <label for="state_id">State</label>-->
+                    <!--                            <select id="state_id" name="state_id" class="form-control">-->
+                    <!--                                <option value="">Select a State...</option>-->
+                    <!--                                <t t-if="request.env['res.country.state'].sudo().search([])">-->
+                    <!--                                    <t t-foreach="request.env['res.country.state'].sudo().search([])" t-as="state">-->
+                    <!--                                        <option t-att-value="state.id">-->
+                    <!--                                            <t t-esc="state.name"/>-->
+                    <!--                                        </option>-->
+                    <!--                                    </t>-->
+                    <!--                                </t>-->
+                    <!--                            </select>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" class="form-control"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Send your access request</button>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                </form>
+
+            </div>
+        </t>
+    </template>
+
+    <template id="template_custom_form_success" name="Success Page">
+        <t t-call="website.layout">
+            <div class="container text-center">
+                <h2 class="mt-4">Thank you for your request !</h2>
+                <p>We will contact you soon.</p>
+                <a href="/" class="btn btn-secondary">Back to home</a>
+            </div>
+        </t>
+    </template>
+</odoo>

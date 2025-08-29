@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.website</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="20"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='website_info_settings']" position="after">
+                <block title="B2B" id="website_get_quote">
+                    <setting>
+                        <div class="content-group">
+                            <div class="row mt12">
+                                <label class="col-lg-8" string="Choisir le site" for="website_quote"/>
+                                <field name="website_quote"/>
+                            </div>
+                        </div>
+
+                        <div class="content-group">
+                            <div class="row mt12">
+                                <label class="col-lg-8" string="Choisir la page Devenir client" for="page_access"/>
+                                <field name="page_access"/>
+                            </div>
+                        </div>
+
+                    </setting>
+
+                    <setting>
+                        <div class="content-group">
+<!--                            <div class="row mt12">-->
+<!--                                <label class="col-lg-8" string="Choisir l'équipe de validation d'accès"-->
+<!--                                       for="crm_team_access"/>-->
+<!--                                <field name="crm_team_access" title="Choisir l'équipe de validation d'accès"/>-->
+<!--                            </div>-->
+
+                            <div class="row mt12">
+                                <label class="col-lg-8" string="Choisir l'équipe de demande de devis"
+                                       for="crm_team_demande"/>
+                                <field name="crm_team_demande" title="Choisir l'équipe de demande de devis"/>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>

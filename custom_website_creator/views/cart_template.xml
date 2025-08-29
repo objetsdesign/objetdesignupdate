@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherit cart page -->
+    <template id="cart_inherit_custom_website" inherit_id="website_sale.cart">
+        <xpath expr="//h3[hasclass('mb-4')]" position="replace">
+            <t t-set="website_quote_id"
+               t-value="request.env['ir.config_parameter'].sudo().get_param('website.website_quote')"/>
+            <t t-set="website_quote"
+               t-value="website_quote_id and request.env['website'].browse(int(website_quote_id))"/>
+
+            <t t-if="website and website_quote and website.id == website_quote.id">
+                <!-- Optionnel : bloc vide si égal -->
+            </t>
+            <t t-else="">
+                <h3 class="mb-4">Order overview</h3>
+            </t>
+        </xpath>
+
+        <xpath expr="//div[hasclass('col')]" position="after">
+            <t t-set="website_quote_id"
+               t-value="request.env['ir.config_parameter'].sudo().get_param('website.website_quote')"/>
+            <t t-set="website_quote"
+               t-value="website_quote_id and request.env['website'].browse(int(website_quote_id))"/>
+            <t t-set="order" t-value="request.website.sale_get_order()"/>
+
+            <!-- Formulaire affiché uniquement pour le site devis -->
+            <t t-if="website and website_quote and website.id == website_quote.id and order and order.order_line">
+                <form id="o_wsale_checkout_form" action="/shop/confirm_devis" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="custom-info-block mt-3">
+                        <h6>Additional information</h6>
+                        <textarea id="order_notes"
+                                  name="extra_info"
+                                  class="form-control"
+                                  rows="6"
+                                  placeholder="Write a comment..."></textarea>
+                    </div>
+                </form>
+            </t>
+        </xpath>
+    </template>
+
+
+    <!-- Delivery address row -->
+    <template id="delivery_address_row_inherit" inherit_id="website_sale.delivery_address_row">
+        <xpath expr="//div[@id='delivery_address_row']/h4" position="replace">
+
+            <t t-set="website_quote_id"
+               t-value="request.env['ir.config_parameter'].sudo().get_param('website.website_quote')"/>
+            <t t-set="website_quote"
+               t-value="website_quote_id and request.env['website'].browse(int(website_quote_id))"/>
+
+            <t t-if="website and website_quote and website.id == website_quote.id">
+                <h4 class="text-uppercase small fs-6 fw-bold">YOUR ADDRESS</h4>
+            </t>
+            <t t-else="">
+                <h4 class="text-uppercase small fs-6 fw-bold">DELIVERY ADDRESS</h4>
+            </t>
+        </xpath>
+    </template>
+
+
+    <!-- Add address button -->
+    <template id="address_row_inherit" inherit_id="website_sale.address_row">
+        <xpath expr="//a[hasclass('o_wsale_add_address')]" position="replace">
+            <t t-set="website_quote_id"
+               t-value="request.env['ir.config_parameter'].sudo().get_param('website.website_quote')"/>
+            <t t-set="website_quote"
+               t-value="website_quote_id and request.env['website'].browse(int(website_quote_id))"/>
+
+            <t t-if="website and website_quote and website.id != website_quote.id">
+                <a
+                    role="button"
+                    t-att-href="new_address_href"
+                    t-att-data-address-type="is_invoice and 'billing' or 'delivery'"
+                    class="o_wsale_add_address d-flex align-items-center justify-content-center h-100 px-4 border rounded mx-auto no-decoration">
+                    <i class="fa fa-plus me-md-2"/>
+                    <span class="d-none d-md-inline">Add address</span>
+                </a>
+            </t>
+
+            <t t-if="website and website_quote and website.id == website_quote.id">
+                <!--reste vide-->
+            </t>
+        </xpath>
+    </template>
+
+
+    <!-- Product page -->
+    <template id="product_inherit" inherit_id="website_sale.product">
+        <xpath expr="//a[@id='add_to_cart']" position="replace">
+            <t t-set="website_quote_id"
+               t-value="request.env['ir.config_parameter'].sudo().get_param('website.website_quote')"/>
+            <t t-set="website_quote"
+               t-value="website_quote_id and request.env['website'].browse(int(website_quote_id))"/>
+
+            <t t-if="website and website_quote and website.id != website_quote.id">
+                <t t-if="request.env.user.id and request.env.user.id != request.env.ref('base.public_user').id">
+                    <a data-animation-selector=".o_wsale_product_images" role="button" id="add_to_devis"
+                       t-attf-class="btn btn-primary js_check_product a-submit flex-grow-1" href="#">
+                        <i class="fa fa-shopping-cart me-2"/>
+                        <t>Request a quote</t>
+                    </a>
+                </t>
+                <t t-else="">
+                    <a data-animation-selector=".o_wsale_product_images" role="button" id="login_redirect"
+                       t-attf-class="btn btn-secondary flex-grow-1"
+                       t-att-href="'/web/login?redirect=' + request.httprequest.path">
+                        <i class="fa fa-sign-in me-2"/>
+                        <t>Request a quote</t>
+                    </a>
+                </t>
+            </t>
+            <t t-else="">
+                <a data-animation-selector=".o_wsale_product_images" role="button" id="add_to_cart"
+                   class="btn btn-primary js_check_product a-submit flex-grow-1" href="#">
+                    <i class="fa fa-shopping-cart me-2"/>
+                    <t>Add to cart</t>
+                </a>
+            </t>
+        </xpath>
+
+        <xpath expr="//div[@id='product_attributes_simple']" position="replace"/>
+    </template>
+
+
+    <!-- Delivery form -->
+    <template id="delivery_form_inherit" inherit_id="website_sale.delivery_form">
+        <xpath expr="//form[@id='o_delivery_form']" position="replace">
+            <t t-set="website_quote_id"
+               t-value="request.env['ir.config_parameter'].sudo().get_param('website.website_quote')"/>
+            <t t-set="website_quote"
+               t-value="website_quote_id and request.env['website'].browse(int(website_quote_id))"/>
+
+            <t t-if="website and website_quote and website.id != website_quote.id">
+                <form id="o_delivery_form" class="o_delivery_form mb-4">
+                    <h4 class="fs-6 small text-uppercase fw-bolder">Choose a delivery method</h4>
+                    <ul t-if="delivery_methods" id="o_delivery_methods" class="list-group">
+                        <t t-foreach="delivery_methods" t-as="dm">
+                            <li name="o_delivery_method" class="list-group-item text-muted o_outline">
+                                <t t-call="website_sale.delivery_method">
+                                    <t t-set="is_selected" t-value="dm.id == selected_dm_id"/>
+                                </t>
+                            </li>
+                        </t>
+                    </ul>
+                    <div t-else="" class="alert alert-warning">
+                        <strong>No suitable delivery method could be found.</strong>
+                    </div>
+                </form>
+            </t>
+        </xpath>
+    </template>
+
+
+    <!-- Billing address row -->
+    <template id="billing_address_row_inherit" inherit_id="website_sale.billing_address_row">
+        <xpath expr="//div[@id='billing_address_row']" position="replace">
+            <t t-set="website_quote_id"
+               t-value="request.env['ir.config_parameter'].sudo().get_param('website.website_quote')"/>
+            <t t-set="website_quote"
+               t-value="website_quote_id and request.env['website'].browse(int(website_quote_id))"/>
+
+            <t t-if="website and website_quote and website.id != website_quote.id">
+                <div id="billing_address_row">
+                    <h4 class="text-uppercase small fs-6 fw-bold mt-3">Billing address</h4>
+                    <t t-set="has_delivery" t-value="order._has_deliverable_products()"/>
+                    <div t-if="has_delivery" class="form-check form-switch mt-2 mb-3">
+                        <label id="use_delivery_as_billing_label">
+                            <input
+                                type="checkbox"
+                                id="use_delivery_as_billing"
+                                class="form-check-input"
+                                t-att-checked="use_delivery_as_billing"
+                            />
+                            Same as delivery address
+                        </label>
+                    </div>
+                    <div
+                        id="billing_container"
+                        t-attf-class="{{'d-none' if use_delivery_as_billing and has_delivery else ''}}"
+                    >
+                        <t t-call="website_sale.address_row">
+                            <t t-set="is_invoice" t-value="True"/>
+                            <t t-set="addresses" t-value="billing_addresses"/>
+                            <t t-set="selected_address" t-value="order.partner_invoice_id"/>
+                        </t>
+                    </div>
+                </div>
+            </t>
+
+            <t t-if="website and website_quote and website.id == website_quote.id">
+                <!-- Optionnel bloc vide -->
+            </t>
+        </xpath>
+    </template>
+
+
+    <!-- Coupon form -->
+    <template id='coupon_form_inherit' inherit_id="website_sale.coupon_form">
+        <xpath expr="//form[@name='coupon_code']" position="replace">
+            <t t-set="website_quote_id"
+               t-value="request.env['ir.config_parameter'].sudo().get_param('website.website_quote')"/>
+            <t t-set="website_quote"
+               t-value="website_quote_id and request.env['website'].browse(int(website_quote_id)) or False"/>
+
+            <t t-if="not website_quote or website and website.id != website_quote.id">
+                <form t-attf-action="/shop/pricelist#{redirect and '?r=' + redirect or ''}"
+                      method="post" name="coupon_code">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"
+                           t-nocache="The csrf token must always be up to date."/>
+                    <div class="input-group w-100 my-2">
+                        <input name="promo" class="form-control" type="text" placeholder="Discount code..."
+                               t-att-value="website_sale_order.pricelist_id.code or None"/>
+                        <a href="#" role="button" class="btn btn-secondary a-submit ps-2">Apply</a>
+                    </div>
+                </form>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>
