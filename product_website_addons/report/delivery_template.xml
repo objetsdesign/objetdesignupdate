@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="delivery_template" model="ir.actions.report">
+        <field name="name">OD bon de livraison</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">product_website_addons.print_delivery_template</field>
+        <field name="report_file">product_website_addons.print_delivery_template</field>
+        <field name="print_report_name">'OD bon de livraison - %s - %s' % (object.partner_id.name or '', object.name)
+        </field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="print_delivery_template_document">
+        <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+        <main style="font-size: 18px;">
+            <t t-set="company" t-value="o.company_id"/>
+            <div class="page" style="padding: 0px; margin: 0;">
+                <div style="color: black; text-align: center; padding: 7px; font-size: 20px; font-weight: bold;">
+                    BON DE LIVRAISON N°
+                    <t t-esc="o.name"/>
+                </div>
+
+                <table style="width: 100%; border-collapse: collapse; margin-top: 5px; border: 1px solid white;">
+                    <tr>
+                        <td style="width: 57%; font-size: 14px; border: 1px solid white;">
+                            <strong>Date de livraison Estimée :</strong>
+                            <t t-esc="o.scheduled_date or ''"/>
+                            <br/>
+                            <strong>Client</strong>
+                            <t t-esc="o.partner_id.name or ''"/>
+                            <br/>
+                            <strong>N° Dossier :</strong>
+                            <t t-esc="o.name or ''"/>
+                            <br/>
+                            <strong>N°Commande:</strong>
+                            <t t-esc="o.origin or ''"/>
+                            <br/>
+                            <strong>Marquage Carton. Shipping mark :</strong>
+                            <t t-esc="o.origin or ''"/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <strong style="color: black; font-size: 17px; font-weight: bold;">Adresse de
+                                livraison :
+                            </strong>
+                            <br/>
+                            <t t-if="o.sale_id and o.sale_id.partner_shipping_id">
+                                <t t-esc="o.sale_id.partner_shipping_id.street or ''"/>
+                                <br/>
+                                <t t-if="o.sale_id.partner_shipping_id.street2">
+                                    <t t-esc="o.sale_id.partner_shipping_id.street2 or ''"/>
+                                    <br/>
+                                </t>
+                                <t t-esc="o.sale_id.partner_shipping_id.zip or ''"/>
+                                <t t-esc="o.sale_id.partner_shipping_id.city or ''"/>
+                                <br/>
+                                <t t-esc="o.sale_id.partner_shipping_id.country_id.name or ''"/>
+                            </t>
+                            <t t-else="">
+                                <i>Aucune adresse de livraison spécifiée</i>
+                            </t>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <table style="width: 100%; border-collapse: collapse; margin-top: 10px; border: 2px solid black;">
+                                <thead>
+                                    <tr style="background-color: lightgray; text-align: center;">
+                                        <th style="border: 1px solid black; padding: 5px;">REF. Shipping mark</th>
+                                        <th style="border: 1px solid black; padding: 5px;">DÉSIGNATION</th>
+                                        <th style="border: 1px solid black; padding: 5px;">QTÉ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="border: 1px solid black; padding: 5px;">Valeur 1</td>
+                                        <td style="border: 1px solid black; padding: 5px;">Valeur 2</td>
+                                        <td style="border: 1px solid black; padding: 5px;">Valeur 3</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </main>
+        <t t-call="product_website_addons.exemple_footer2"/>
+    </template>
+
+    <template id="exemple_footer2">
+        <t t-extend="web.external_layout_footer">
+            <t t-jquery="div.footer" t-operation="replace">
+                <div class="footer" style="width: 100%; font-size: 12px;">
+                    <table style="width: 100%; border-collapse: collapse; border: 1px solid white;">
+                        <tr>
+                            <td style="text-align: left; vertical-align: middle; padding-left: 10px; width: 70%;">
+                                <t t-if="o.sale_id">
+                                    <t t-raw="o.sale_id.sale_order_template_id.pied_page"/>
+                                </t>
+                                <t t-else="">
+                                    <i>Aucun modèle de commande de vente associé</i>
+                                </t>
+                            </td>
+                            <td style="text-align: right; vertical-align: middle; padding-right: 10px; width: 30%;">
+                                <img t-att-src="'/product_website_addons/static/src/img/logo_footer.png'"
+                                     style="max-height: 50px; width: auto;"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="print_delivery_template">
+        <t t-call="web.external_layout">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="product_website_addons.print_delivery_template_document"
+                   t-lang="o.partner_id.lang or 'fr_FR'"/>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>
