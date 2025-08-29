@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sh_inherit_res_config_settings_view_form_custom_tab" model="ir.ui.view">
+        <field name="name">sh.inherit.res.config.settings.view.form.custom.tab</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <block id="website_settings" position="after">
+                <block title="Custom Tab Style" name="sh_product_custom_tab_website_settings">
+                    <setting string="" help="" title="">
+                        <field name="sh_tab_style"/>
+                    </setting>
+                    <setting string="" help="" title="">
+                        <field name="sh_product_custom_tab_heading"/>
+                    </setting>
+                </block>
+            </block>
+        </field>
+    </record>
+</odoo>

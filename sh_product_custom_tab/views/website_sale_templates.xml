@@ -1,0 +1,1012 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Default Tab -->
+    <template id="sh_tab_style">
+        <div itemprop="description" t-field="product.website_description"
+            class="oe_structure oe_empty mt16" id="product_full_description" />
+    </template>
+
+    <!-- Custom Tab Style 1 -->
+    <template id="sh_tab_style_one">
+        <section id="sh_tab_design_1">
+            <h3 t-if="website.sh_product_custom_tab_heading" align="center"
+                class="text-primary title">
+                <b t-field="website.sh_product_custom_tab_heading" />
+            </h3>
+
+            <ul id="myTabs" class="nav nav-pills nav-justified js_cls_sh_product_custom_tab_ul"
+                role="tablist" data-tabs="tabs">
+                <!-- Global Tabs -->
+                <t
+                    t-foreach="request.env['sh.product.custom.tab'].search([('is_global', '=', True),('active', '=', True)])"
+                    t-as="rec">
+                    <t t-set="sh_product_custom_tab_href"
+                        t-value="'#sh_custom_prod_tab_global_%s'% (rec.id)" />
+
+                    <t
+                        t-if="rec.code in ['sh_product_custom_tab_details','sh_product_custom_tab_rating','sh_product_custom_tab_desc']">
+                        <t t-set="sh_product_custom_tab_href" t-value="'#%s'% (rec.code)" />
+                    </t>
+                    <t t-set="sh_specification_categories"
+                        t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()" />
+                    <!-- Specification -->
+                    <t
+                        t-if="rec.code == 'sh_product_custom_tab_details' and not sh_specification_categories">
+                        <t t-set="sh_product_custom_tab_href" t-value="False" />
+                    </t>
+                    <li t-if="sh_product_custom_tab_href">
+                        <a t-att-href="sh_product_custom_tab_href" data-bs-toggle="tab">
+                            <i t-if="rec.icon" t-attf-class="icon fa #{rec.icon}" />
+                            <span t-field="rec.name" />
+                        </a>
+                    </li>
+                </t>
+
+                <!-- Product Wise Tabs -->
+                <t t-foreach="product.sh_tab_ids" t-as="tab">
+                    <t t-if="tab.active">
+                        <li>
+                            <a t-att-href="'#sh_custom_prod_tab_%s'% (tab.id)" data-bs-toggle="tab">
+                                <i t-if="tab.icon" t-attf-class="icon fa #{tab.icon}" />
+                                <span t-field="tab.name" />
+                            </a>
+                        </li>
+                    </t>
+                </t>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in" id="sh_product_custom_tab_details">
+                    <section class="container" id="product_full_spec">
+                        <t t-set="categories"
+                            t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()" />
+                        <t t-if="categories">
+<!--                            <h3 class="text-center mb32" t-translate="yes">Specifications for <t t-esc="product.name" /></h3>-->
+                            <div class="row">
+                                <div class="col-lg-8 offset-lg-2" id="product_specifications">
+                                    <table class="table table-striped table-sm table-hover">
+                                        <t t-foreach="categories" t-as="category">
+                                            <t t-if="len(categories) > 1">
+                                                <tr class="clickable" data-bs-toggle="collapse"
+                                                    t-att-data-target="'.o_ws_category_%d' % category.id">
+                                                    <th class="text-left" t-att-colspan="2">
+                                                        <span t-if="category"
+                                                            t-field="category.name" />
+                                                        <span t-else="">Uncategorized</span>
+                                                    </th>
+                                                </tr>
+                                            </t>
+                                            <tr
+                                                t-foreach="categories[category].filtered(lambda l: len(l.value_ids) > 1)"
+                                                t-as="ptal"
+                                                t-att-class="'collapse show o_ws_category_%d' % category.id">
+                                                <td>
+                                                    <span t-field="ptal.attribute_id.name" />
+                                                </td>
+                                                <td>
+                                                    <t t-foreach="ptal.value_ids" t-as="pav">
+                                                        <span t-field="pav.name" />
+                                                        <t t-if="not pav_last"> or</t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                            <t t-set="single_value_attributes"
+                                                t-value="categories[category]._prepare_single_value_for_display()" />
+                                            <tr t-foreach="single_value_attributes" t-as="attribute"
+                                                t-att-class="'collapse show o_ws_category_%d' % category.id">
+                                                <td>
+                                                    <span t-field="attribute.name" />
+                                                </td>
+                                                <td>
+                                                    <t
+                                                        t-foreach="single_value_attributes[attribute]"
+                                                        t-as="ptal">
+                                                        <span
+                                                            t-field="ptal.product_template_value_ids._only_active().name" />
+                                                        <t t-if="not ptal_last">, </t>
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+                    </section>
+                </div>
+
+                <div role="tabpanel" class="tab-pane fade" id="sh_product_custom_tab_rating">
+                    <div class="o_shop_discussion_rating">
+                        <section class="container mt16 mb16">
+                            <hr />
+                            <div class="row">
+                                <div class="col-lg-8 offset-lg-2">
+                                    <t t-call="portal.message_thread">
+                                        <t t-set="object" t-value="product" />
+                                        <t t-set="display_rating" t-value="True" />
+                                        <t t-set="message_per_page" t-value="5" />
+                                        <t t-set="two_columns" t-value="true" />
+                                    </t>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane fade" id="sh_product_custom_tab_desc">
+                    <div itemprop="description" t-field="product.website_description"
+                        class="oe_structure mt16" />
+                </div>
+
+                <!-- Global Tabs Contents-->
+                <t
+                    t-foreach="request.env['sh.product.custom.tab'].search([('is_global', '=', True),('active', '=', True)])"
+                    t-as="rec">
+                    <t t-set="sh_product_custom_tab_id"
+                        t-value="'sh_custom_prod_tab_global_%s'% (rec.id)" />
+                    <div role="tabpanel" class="tab-pane fade" t-att-id="sh_product_custom_tab_id">
+                        <t t-out="rec.description" />
+                    </div>
+                </t>
+
+                <!-- Product Wise Tabs Contents-->
+
+                <t t-foreach="product.sh_tab_ids" t-as="tab">
+                    <t t-if="tab.active">
+                        <div class="tab-pane fade" t-att-id="'sh_custom_prod_tab_%s'% (tab.id)"
+                            role="tabpanel" aria-labelledby="nav-about-tab">
+                            <t t-out="tab.description" />
+                        </div>
+                    </t>
+                </t>
+            </div>
+        </section>
+    </template>
+
+    <!-- Custom Tab Style 2 -->
+    <template id="sh_tab_style_two">
+        <section id="sh_tab_design_2">
+            <h3 t-if="website.sh_product_custom_tab_heading" align="center"
+                class="text-primary title">
+                <b t-field="website.sh_product_custom_tab_heading" />
+            </h3>
+            <div class="row">
+                <div class="col">
+                    <nav>
+                        <div class="nav nav-tabs nav-fill js_cls_sh_product_custom_tab_ul"
+                            id="nav-tab" role="tablist">
+                            <!-- Global Tabs -->
+                            <t
+                                t-foreach="request.env['sh.product.custom.tab'].search([('is_global', '=', True),('active', '=', True)])"
+                                t-as="rec">
+                                <t t-set="sh_product_custom_tab_href"
+                                    t-value="'#sh_custom_prod_tab_global_%s'% (rec.id)" />
+
+                                <t
+                                    t-if="rec.code in ['sh_product_custom_tab_details','sh_product_custom_tab_rating','sh_product_custom_tab_desc']">
+                                    <t t-set="sh_product_custom_tab_href"
+                                        t-value="'#%s'% (rec.code)" />
+                                </t>
+                                <t t-set="sh_specification_categories"
+                                    t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()" />
+                                <!-- Specification -->
+                                <t
+                                    t-if="rec.code == 'sh_product_custom_tab_details' and not sh_specification_categories">
+                                    <t t-set="sh_product_custom_tab_href" t-value="False" />
+                                </t>
+                                <a t-if="sh_product_custom_tab_href" class="nav-item nav-link"
+                                    t-att-href="sh_product_custom_tab_href" data-bs-toggle="tab">
+                                    <i t-if="rec.icon" t-attf-class="icon fa #{rec.icon}" />
+                                    <span t-field="rec.name" />
+                                </a>
+                            </t>
+
+                            <!-- Product Wise Tabs -->
+                            <t t-foreach="product.sh_tab_ids" t-as="tab">
+                                <t t-if="tab.active">
+                                    <a class="nav-item nav-link"
+                                        t-att-href="'#sh_custom_prod_tab_%s'% (tab.id)"
+                                        data-bs-toggle="tab">
+                                        <i t-if="tab.icon" t-attf-class="icon fa #{tab.icon}" />
+                                        <span t-field="tab.name" />
+                                    </a>
+                                </t>
+                            </t>
+                        </div>
+                    </nav>
+                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                        <div role="tabpanel" class="tab-pane fade in"
+                            id="sh_product_custom_tab_details">
+                            <section class="container" id="product_full_spec">
+                                <t t-set="categories"
+                                    t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()" />
+                                <t t-if="categories">
+<!--                                    <h3 class="text-center mb32" t-translate="yes">Specifications for <t-->
+<!--                                            t-esc="product.name" /></h3>-->
+                                    <div class="row">
+                                        <div class="col-lg-8 offset-lg-2"
+                                            id="product_specifications">
+                                            <table class="table table-striped table-sm table-hover">
+                                                <t t-foreach="categories" t-as="category">
+                                                    <t t-if="len(categories) > 1">
+                                                        <tr class="clickable"
+                                                            data-bs-toggle="collapse"
+                                                            t-att-data-target="'.o_ws_category_%d' % category.id">
+                                                            <th class="text-left" t-att-colspan="2">
+                                                                <span t-if="category"
+                                                                    t-field="category.name" />
+                                                                <span t-else="">Uncategorized</span>
+                                                            </th>
+                                                        </tr>
+                                                    </t>
+                                                    <tr
+                                                        t-foreach="categories[category].filtered(lambda l: len(l.value_ids) > 1)"
+                                                        t-as="ptal"
+                                                        t-att-class="'collapse show o_ws_category_%d' % category.id">
+                                                        <td>
+                                                            <span t-field="ptal.attribute_id.name" />
+                                                        </td>
+                                                        <td>
+                                                            <t t-foreach="ptal.value_ids" t-as="pav">
+                                                                <span t-field="pav.name" />
+                                                                <t t-if="not pav_last"> or</t>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                    <t t-set="single_value_attributes"
+                                                        t-value="categories[category]._prepare_single_value_for_display()" />
+                                                    <tr t-foreach="single_value_attributes"
+                                                        t-as="attribute"
+                                                        t-att-class="'collapse show o_ws_category_%d' % category.id">
+                                                        <td>
+                                                            <span t-field="attribute.name" />
+                                                        </td>
+                                                        <td>
+                                                            <t
+                                                                t-foreach="single_value_attributes[attribute]"
+                                                                t-as="ptal">
+                                                                <span
+                                                                    t-field="ptal.product_template_value_ids._only_active().name" />
+                                                                <t t-if="not ptal_last">, </t>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </t>
+                            </section>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="sh_product_custom_tab_rating">
+                            <div class="o_shop_discussion_rating">
+                                <section class="container mt16 mb16">
+                                    <div class="row">
+                                        <div class="col-lg-8 offset-lg-2">
+                                            <t t-call="portal.message_thread">
+                                                <t t-set="object" t-value="product"/>
+                                                <t t-set="display_rating" t-value="True"/>
+                                                <t t-set="message_per_page" t-value="5"/>
+                                                <t t-set="two_columns" t-value="true"/>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="sh_product_custom_tab_desc">
+                            <div itemprop="description" t-field="product.website_description"
+                                class="oe_structure mt16" />
+                        </div>
+
+                        <!-- Global Tabs Contents-->
+                        <t
+                            t-foreach="request.env['sh.product.custom.tab'].search([('is_global', '=', True),('active', '=', True)])"
+                            t-as="rec">
+                            <t t-set="sh_product_custom_tab_id"
+                                t-value="'sh_custom_prod_tab_global_%s'% (rec.id)" />
+                            <div role="tabpanel" class="tab-pane fade"
+                                t-att-id="sh_product_custom_tab_id">
+                                <t t-out="rec.description" />
+                            </div>
+                        </t>
+
+                        <!-- Product Wise Tabs Contents-->
+
+                        <t t-foreach="product.sh_tab_ids" t-as="tab">
+                            <t t-if="tab.active">
+                                <div class="tab-pane fade"
+                                    t-att-id="'sh_custom_prod_tab_%s'% (tab.id)" role="tabpanel"
+                                    aria-labelledby="nav-about-tab">
+                                    <t t-out="tab.description" />
+                                </div>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- Custom Tab Style 3 -->
+    <template id="sh_tab_style_three">
+        <section id="sh_tab_design_3">
+            <h3 t-if="website.sh_product_custom_tab_heading" align="center"
+                class="text-primary title">
+                <b t-field="website.sh_product_custom_tab_heading" />
+            </h3>
+            <div class="tabbable-panel margin-tops4">
+                <div class="tabbable-line">
+                    <ul class="nav nav-tabs tabtop tabsetting js_cls_sh_product_custom_tab_ul">
+                        <!-- Global Tabs -->
+                        <t
+                            t-foreach="request.env['sh.product.custom.tab'].search([('is_global', '=', True),('active', '=', True)])"
+                            t-as="rec">
+                            <t t-set="sh_product_custom_tab_href"
+                                t-value="'#sh_custom_prod_tab_global_%s'% (rec.id)" />
+
+                            <t
+                                t-if="rec.code in ['sh_product_custom_tab_details','sh_product_custom_tab_rating','sh_product_custom_tab_desc']">
+                                <t t-set="sh_product_custom_tab_href" t-value="'#%s'% (rec.code)" />
+                            </t>
+                            <t t-set="sh_specification_categories"
+                                t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()" />
+                            <!-- Specification -->
+                            <t
+                                t-if="rec.code == 'sh_product_custom_tab_details' and not sh_specification_categories">
+                                <t t-set="sh_product_custom_tab_href" t-value="False" />
+                            </t>
+                            <li t-if="sh_product_custom_tab_href">
+                                <a t-att-href="sh_product_custom_tab_href" data-bs-toggle="tab">
+                                    <i t-if="rec.icon" t-attf-class="icon fa #{rec.icon}" />
+                                    <span t-field="rec.name" />
+                                </a>
+                            </li>
+                        </t>
+
+                        <!-- Product Wise Tabs -->
+                        <t t-foreach="product.sh_tab_ids" t-as="tab">
+                            <t t-if="tab.active">
+                                <li>
+                                    <a t-att-href="'#sh_custom_prod_tab_%s'% (tab.id)"
+                                        data-bs-toggle="tab">
+                                        <i t-if="tab.icon" t-attf-class="icon fa #{tab.icon}" />
+                                        <span t-field="tab.name" />
+                                    </a>
+                                </li>
+                            </t>
+                        </t>
+                    </ul>
+                    <div class="tab-content margin-tops">
+                        <div role="tabpanel" class="tab-pane fade in"
+                            id="sh_product_custom_tab_details">
+                            <section class="container" id="product_full_spec">
+                                <t t-set="categories"
+                                    t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()" />
+                                <t t-if="categories">
+<!--                                    <h3 class="text-center mb32" t-translate="yes">Specifications for <t-->
+<!--                                            t-esc="product.name" /></h3>-->
+                                    <div class="row">
+                                        <div class="col-lg-8 offset-lg-2"
+                                            id="product_specifications">
+                                            <table class="table table-striped table-sm table-hover">
+                                                <t t-foreach="categories" t-as="category">
+                                                    <t t-if="len(categories) > 1">
+                                                        <tr class="clickable"
+                                                            data-bs-toggle="collapse"
+                                                            t-att-data-target="'.o_ws_category_%d' % category.id">
+                                                            <th class="text-left" t-att-colspan="2">
+                                                                <span t-if="category"
+                                                                    t-field="category.name" />
+                                                                <span t-else="">Uncategorized</span>
+                                                            </th>
+                                                        </tr>
+                                                    </t>
+                                                    <tr
+                                                        t-foreach="categories[category].filtered(lambda l: len(l.value_ids) > 1)"
+                                                        t-as="ptal"
+                                                        t-att-class="'collapse show o_ws_category_%d' % category.id">
+                                                        <td>
+                                                            <span t-field="ptal.attribute_id.name" />
+                                                        </td>
+                                                        <td>
+                                                            <t t-foreach="ptal.value_ids" t-as="pav">
+                                                                <span t-field="pav.name" />
+                                                                <t t-if="not pav_last"> or</t>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                    <t t-set="single_value_attributes"
+                                                        t-value="categories[category]._prepare_single_value_for_display()" />
+                                                    <tr t-foreach="single_value_attributes"
+                                                        t-as="attribute"
+                                                        t-att-class="'collapse show o_ws_category_%d' % category.id">
+                                                        <td>
+                                                            <span t-field="attribute.name" />
+                                                        </td>
+                                                        <td>
+                                                            <t
+                                                                t-foreach="single_value_attributes[attribute]"
+                                                                t-as="ptal">
+                                                                <span
+                                                                    t-field="ptal.product_template_value_ids._only_active().name" />
+                                                                <t t-if="not ptal_last">, </t>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </t>
+                            </section>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="sh_product_custom_tab_rating">
+                            <div class="o_shop_discussion_rating">
+                                <section class="container mt16 mb16">
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-lg-8 offset-lg-2">
+                                            <t t-call="portal.message_thread">
+                                                <t t-set="object" t-value="product" />
+                                                <t t-set="display_rating" t-value="True" />
+                                                <t t-set="message_per_page" t-value="5" />
+                                                <t t-set="two_columns" t-value="true" />
+                                            </t>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="sh_product_custom_tab_desc">
+                            <div itemprop="description" t-field="product.website_description"
+                                class="oe_structure mt16" />
+                        </div>
+
+                        <!-- Global Tabs Contents-->
+                        <t
+                            t-foreach="request.env['sh.product.custom.tab'].search([('is_global', '=', True),('active', '=', True)])"
+                            t-as="rec">
+                            <t t-set="sh_product_custom_tab_id"
+                                t-value="'sh_custom_prod_tab_global_%s'% (rec.id)" />
+                            <div role="tabpanel" class="tab-pane fade"
+                                t-att-id="sh_product_custom_tab_id">
+                                <t t-out="rec.description" />
+                            </div>
+                        </t>
+
+                        <!-- Product Wise Tabs Contents-->
+
+                        <t t-foreach="product.sh_tab_ids" t-as="tab">
+                            <t t-if="tab.active">
+                                <div class="tab-pane fade"
+                                    t-att-id="'sh_custom_prod_tab_%s'% (tab.id)" role="tabpanel"
+                                    aria-labelledby="nav-about-tab">
+                                    <t t-out="tab.description" />
+                                </div>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- Custom Tab Style 4 -->
+    <template id="sh_tab_style_four">
+        <section id="sh_tab_design_4">
+            <h3 t-if="website.sh_product_custom_tab_heading" align="center"
+                class="text-primary title">
+                <b t-field="website.sh_product_custom_tab_heading" />
+            </h3>
+            <div class="tabbable-panel margin-tops4">
+                <div class="tabbable-line">
+                    <ul class="nav nav-tabs tabtop js_cls_sh_product_custom_tab_ul">
+                        <!-- Global Tabs -->
+                        <t
+                            t-foreach="request.env['sh.product.custom.tab'].search([('is_global', '=', True),('active', '=', True)])"
+                            t-as="rec">
+                            <t t-set="sh_product_custom_tab_href"
+                                t-value="'#sh_custom_prod_tab_global_%s'% (rec.id)" />
+
+                            <t
+                                t-if="rec.code in ['sh_product_custom_tab_details','sh_product_custom_tab_rating','sh_product_custom_tab_desc']">
+                                <t t-set="sh_product_custom_tab_href" t-value="'#%s'% (rec.code)" />
+                            </t>
+                            <t t-set="sh_specification_categories"
+                                t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()" />
+                            <!-- Specification -->
+                            <t
+                                t-if="rec.code == 'sh_product_custom_tab_details' and not sh_specification_categories">
+                                <t t-set="sh_product_custom_tab_href" t-value="False" />
+                            </t>
+                            <li t-if="sh_product_custom_tab_href">
+                                <a t-att-href="sh_product_custom_tab_href" class="btn"
+                                    data-bs-toggle="tab">
+                                    <i t-if="rec.icon" t-attf-class="icon fa #{rec.icon}" />
+                                    <span t-field="rec.name" />
+                                </a>
+                            </li>
+                        </t>
+
+                        <!-- Product Wise Tabs -->
+                        <t t-foreach="product.sh_tab_ids" t-as="tab">
+                            <t t-if="tab.active">
+                                <li>
+                                    <a t-att-href="'#sh_custom_prod_tab_%s'% (tab.id)" class="btn"
+                                        data-bs-toggle="tab">
+                                        <i t-if="tab.icon" t-attf-class="icon fa #{tab.icon}" />
+                                        <span t-field="tab.name" />
+                                    </a>
+                                </li>
+                            </t>
+                        </t>
+                    </ul>
+                    <div class="tab-content margin-tops">
+                        <div role="tabpanel" class="tab-pane fade in"
+                            id="sh_product_custom_tab_details">
+                            <section class="container" id="product_full_spec">
+                                <t t-set="categories"
+                                    t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()" />
+                                <t t-if="categories">
+<!--                                    <h3 class="text-center mb32" t-translate="yes">Specifications for <t-->
+<!--                                            t-esc="product.name" /></h3>-->
+                                    <div class="row">
+                                        <div class="col-lg-8 offset-lg-2"
+                                            id="product_specifications">
+                                            <table class="table table-striped table-sm table-hover">
+                                                <t t-foreach="categories" t-as="category">
+                                                    <t t-if="len(categories) > 1">
+                                                        <tr class="clickable"
+                                                            data-bs-toggle="collapse"
+                                                            t-att-data-target="'.o_ws_category_%d' % category.id">
+                                                            <th class="text-left" t-att-colspan="2">
+                                                                <span t-if="category"
+                                                                    t-field="category.name" />
+                                                                <span t-else="">Uncategorized</span>
+                                                            </th>
+                                                        </tr>
+                                                    </t>
+                                                    <tr
+                                                        t-foreach="categories[category].filtered(lambda l: len(l.value_ids) > 1)"
+                                                        t-as="ptal"
+                                                        t-att-class="'collapse show o_ws_category_%d' % category.id">
+                                                        <td>
+                                                            <span t-field="ptal.attribute_id.name" />
+                                                        </td>
+                                                        <td>
+                                                            <t t-foreach="ptal.value_ids" t-as="pav">
+                                                                <span t-field="pav.name" />
+                                                                <t t-if="not pav_last"> or</t>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                    <t t-set="single_value_attributes"
+                                                        t-value="categories[category]._prepare_single_value_for_display()" />
+                                                    <tr t-foreach="single_value_attributes"
+                                                        t-as="attribute"
+                                                        t-att-class="'collapse show o_ws_category_%d' % category.id">
+                                                        <td>
+                                                            <span t-field="attribute.name" />
+                                                        </td>
+                                                        <td>
+                                                            <t
+                                                                t-foreach="single_value_attributes[attribute]"
+                                                                t-as="ptal">
+                                                                <span
+                                                                    t-field="ptal.product_template_value_ids._only_active().name" />
+                                                                <t t-if="not ptal_last">, </t>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </t>
+                            </section>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="sh_product_custom_tab_rating">
+                            <div class="o_shop_discussion_rating">
+                                <section class="container mt16 mb16">
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-lg-8 offset-lg-2">
+                                            <t t-call="portal.message_thread">
+                                                <t t-set="object" t-value="product"/>
+                                                <t t-set="display_rating" t-value="True"/>
+                                                <t t-set="message_per_page" t-value="5"/>
+                                                <t t-set="two_columns" t-value="true"/>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="sh_product_custom_tab_desc">
+                            <div itemprop="description" t-field="product.website_description"
+                                class="oe_structure mt16" />
+                        </div>
+
+                        <!-- Global Tabs Contents-->
+                        <t
+                            t-foreach="request.env['sh.product.custom.tab'].search([('is_global', '=', True),('active', '=', True)])"
+                            t-as="rec">
+                            <t t-set="sh_product_custom_tab_id"
+                                t-value="'sh_custom_prod_tab_global_%s'% (rec.id)" />
+                            <div role="tabpanel" class="tab-pane fade"
+                                t-att-id="sh_product_custom_tab_id">
+                                <t t-out="rec.description" />
+                            </div>
+                        </t>
+
+                        <!-- Product Wise Tabs Contents-->
+
+                        <t t-foreach="product.sh_tab_ids" t-as="tab">
+                            <t t-if="tab.active">
+                                <div class="tab-pane fade"
+                                    t-att-id="'sh_custom_prod_tab_%s'% (tab.id)" role="tabpanel"
+                                    aria-labelledby="nav-about-tab">
+                                    <t t-out="tab.description" />
+                                </div>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- Custom Tab Style 5 -->
+    <template id="sh_tab_style_five">
+        <section id="sh_tab_design_5">
+            <h3 t-if="website.sh_product_custom_tab_heading" align="center"
+                class="text-primary title">
+                <b t-field="website.sh_product_custom_tab_heading" />
+            </h3>
+            <div class="tabbable-panel margin-tops4">
+                <div class="tabbable-line">
+                    <ul class="nav nav-tabs tabtop tabsetting js_cls_sh_product_custom_tab_ul">
+                        <!-- Global Tabs -->
+                        <t
+                            t-foreach="request.env['sh.product.custom.tab'].search([('is_global', '=', True),('active', '=', True)])"
+                            t-as="rec">
+                            <t t-set="sh_product_custom_tab_href"
+                                t-value="'#sh_custom_prod_tab_global_%s'% (rec.id)" />
+
+                            <t
+                                t-if="rec.code in ['sh_product_custom_tab_details','sh_product_custom_tab_rating','sh_product_custom_tab_desc']">
+                                <t t-set="sh_product_custom_tab_href" t-value="'#%s'% (rec.code)" />
+                            </t>
+                            <t t-set="sh_specification_categories"
+                                t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()" />
+                            <!-- Specification -->
+                            <t
+                                t-if="rec.code == 'sh_product_custom_tab_details' and not sh_specification_categories">
+                                <t t-set="sh_product_custom_tab_href" t-value="False" />
+                            </t>
+                            <li t-if="sh_product_custom_tab_href">
+                                <a t-att-href="sh_product_custom_tab_href" data-bs-toggle="tab">
+                                    <i t-if="rec.icon" t-attf-class="icon fa #{rec.icon}" />
+                                    <span t-field="rec.name" />
+                                </a>
+                            </li>
+                        </t>
+
+                        <!-- Product Wise Tabs -->
+                        <t t-foreach="product.sh_tab_ids" t-as="tab">
+                            <t t-if="tab.active">
+                                <li>
+                                    <a t-att-href="'#sh_custom_prod_tab_%s'% (tab.id)"
+                                        data-bs-toggle="tab">
+                                        <i t-if="tab.icon" t-attf-class="icon fa #{tab.icon}" />
+                                        <span t-field="tab.name" />
+                                    </a>
+                                </li>
+                            </t>
+                        </t>
+                    </ul>
+                    <div class="tab-content margin-tops">
+                        <div role="tabpanel" class="tab-pane fade in"
+                            id="sh_product_custom_tab_details">
+                            <section class="container" id="product_full_spec">
+                                <t t-set="categories"
+                                    t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()" />
+                                <t t-if="categories">
+<!--                                    <h3 class="text-center mb32" t-translate="yes">Specifications for <t-->
+<!--                                            t-esc="product.name" /></h3>-->
+                                    <div class="row">
+                                        <div class="col-lg-8 offset-lg-2"
+                                            id="product_specifications">
+                                            <table class="table table-striped table-sm table-hover">
+                                                <t t-foreach="categories" t-as="category">
+                                                    <t t-if="len(categories) > 1">
+                                                        <tr class="clickable"
+                                                            data-bs-toggle="collapse"
+                                                            t-att-data-target="'.o_ws_category_%d' % category.id">
+                                                            <th class="text-left" t-att-colspan="2">
+                                                                <span t-if="category"
+                                                                    t-field="category.name" />
+                                                                <span t-else="">Uncategorized</span>
+                                                            </th>
+                                                        </tr>
+                                                    </t>
+                                                    <tr
+                                                        t-foreach="categories[category].filtered(lambda l: len(l.value_ids) > 1)"
+                                                        t-as="ptal"
+                                                        t-att-class="'collapse show o_ws_category_%d' % category.id">
+                                                        <td>
+                                                            <span t-field="ptal.attribute_id.name" />
+                                                        </td>
+                                                        <td>
+                                                            <t t-foreach="ptal.value_ids" t-as="pav">
+                                                                <span t-field="pav.name" />
+                                                                <t t-if="not pav_last"> or</t>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                    <t t-set="single_value_attributes"
+                                                        t-value="categories[category]._prepare_single_value_for_display()" />
+                                                    <tr t-foreach="single_value_attributes"
+                                                        t-as="attribute"
+                                                        t-att-class="'collapse show o_ws_category_%d' % category.id">
+                                                        <td>
+                                                            <span t-field="attribute.name" />
+                                                        </td>
+                                                        <td>
+                                                            <t
+                                                                t-foreach="single_value_attributes[attribute]"
+                                                                t-as="ptal">
+                                                                <span
+                                                                    t-field="ptal.product_template_value_ids._only_active().name" />
+                                                                <t t-if="not ptal_last">, </t>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </t>
+                            </section>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="sh_product_custom_tab_rating">
+                            <div class="o_shop_discussion_rating">
+                                <section class="container mt16 mb16">
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-lg-8 offset-lg-2">
+                                            <t t-call="portal.message_thread">
+                                                <t t-set="object" t-value="product"/>
+                                                <t t-set="display_rating" t-value="True"/>
+                                                <t t-set="message_per_page" t-value="5"/>
+                                                <t t-set="two_columns" t-value="true"/>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="sh_product_custom_tab_desc">
+                            <div itemprop="description" t-field="product.website_description"
+                                class="oe_structure mt16" />
+                        </div>
+
+                        <!-- Global Tabs Contents-->
+                        <t
+                            t-foreach="request.env['sh.product.custom.tab'].search([('is_global', '=', True),('active', '=', True)])"
+                            t-as="rec">
+                            <t t-set="sh_product_custom_tab_id"
+                                t-value="'sh_custom_prod_tab_global_%s'% (rec.id)" />
+                            <div role="tabpanel" class="tab-pane fade"
+                                t-att-id="sh_product_custom_tab_id">
+                                <t t-out="rec.description" />
+                            </div>
+                        </t>
+
+                        <!-- Product Wise Tabs Contents-->
+
+                        <t t-foreach="product.sh_tab_ids" t-as="tab">
+                            <t t-if="tab.active">
+                                <div class="tab-pane fade"
+                                    t-att-id="'sh_custom_prod_tab_%s'% (tab.id)" role="tabpanel"
+                                    aria-labelledby="nav-about-tab">
+                                    <t t-out="tab.description" />
+                                </div>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- Custom Tab Style 6 -->
+    <template id="sh_tab_style_six">
+        <section id="sh_vertical_tab_design_1">
+            <h3 t-if="website.sh_product_custom_tab_heading" align="center"
+                class="text-primary title">
+                <b t-field="website.sh_product_custom_tab_heading" />
+            </h3>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="nav nav-pills faq-nav js_cls_sh_product_custom_tab_ul" id="faq-tabs"
+                        role="tablist" aria-orientation="vertical">
+                        <!-- Global Tabs -->
+                        <t
+                            t-foreach="request.env['sh.product.custom.tab'].search([('is_global', '=', True),('active', '=', True)])"
+                            t-as="rec">
+                            <t t-set="sh_product_custom_tab_href"
+                                t-value="'#sh_custom_prod_tab_global_%s'% (rec.id)" />
+
+                            <t
+                                t-if="rec.code in ['sh_product_custom_tab_details','sh_product_custom_tab_rating','sh_product_custom_tab_desc']">
+                                <t t-set="sh_product_custom_tab_href" t-value="'#%s'% (rec.code)" />
+                            </t>
+                            <t t-set="sh_specification_categories"
+                                t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()" />
+                            <!-- Specification -->
+                            <t
+                                t-if="rec.code == 'sh_product_custom_tab_details' and not sh_specification_categories">
+                                <t t-set="sh_product_custom_tab_href" t-value="False" />
+                            </t>
+                            <a t-if="sh_product_custom_tab_href"
+                                t-att-href="sh_product_custom_tab_href" class="nav-link"
+                                data-bs-toggle="pill" role="tab">
+                                <i t-if="rec.icon" t-attf-class="icon fa #{rec.icon}" />
+                                <span t-field="rec.name" />
+                            </a>
+                        </t>
+
+                        <!-- Product Wise Tabs -->
+                        <t t-foreach="product.sh_tab_ids" t-as="tab">
+                            <t t-if="tab.active">
+                                <a t-att-href="'#sh_custom_prod_tab_%s'% (tab.id)" class="nav-link"
+                                    data-bs-toggle="pill" role="tab">
+                                    <i t-if="tab.icon" t-attf-class="icon fa #{tab.icon}" />
+                                    <span t-field="tab.name" />
+                                </a>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="tab-content" id="faq-tab-content">
+                        <div role="tabpanel" class="tab-pane" id="sh_product_custom_tab_details">
+                            <section class="container" id="product_full_spec">
+                                <t t-set="categories"
+                                    t-value="product.valid_product_template_attribute_line_ids._prepare_categories_for_display()" />
+                                <t t-if="categories">
+<!--                                    <h3 class="text-center mb32" t-translate="yes">Specifications for <t-->
+<!--                                            t-esc="product.name" /></h3>-->
+                                    <div class="row">
+                                        <div class="col-lg-8 offset-lg-2"
+                                            id="product_specifications">
+                                            <table class="table table-striped table-sm table-hover">
+                                                <t t-foreach="categories" t-as="category">
+                                                    <t t-if="len(categories) > 1">
+                                                        <tr class="clickable"
+                                                            data-bs-toggle="collapse"
+                                                            t-att-data-target="'.o_ws_category_%d' % category.id">
+                                                            <th class="text-left" t-att-colspan="2">
+                                                                <span t-if="category"
+                                                                    t-field="category.name" />
+                                                                <span t-else="">Uncategorized</span>
+                                                            </th>
+                                                        </tr>
+                                                    </t>
+                                                    <tr
+                                                        t-foreach="categories[category].filtered(lambda l: len(l.value_ids) > 1)"
+                                                        t-as="ptal"
+                                                        t-att-class="'collapse show o_ws_category_%d' % category.id">
+                                                        <td>
+                                                            <span t-field="ptal.attribute_id.name" />
+                                                        </td>
+                                                        <td>
+                                                            <t t-foreach="ptal.value_ids" t-as="pav">
+                                                                <span t-field="pav.name" />
+                                                                <t t-if="not pav_last"> or</t>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                    <t t-set="single_value_attributes"
+                                                        t-value="categories[category]._prepare_single_value_for_display()" />
+                                                    <tr t-foreach="single_value_attributes"
+                                                        t-as="attribute"
+                                                        t-att-class="'collapse show o_ws_category_%d' % category.id">
+                                                        <td>
+                                                            <span t-field="attribute.name" />
+                                                        </td>
+                                                        <td>
+                                                            <t
+                                                                t-foreach="single_value_attributes[attribute]"
+                                                                t-as="ptal">
+                                                                <span
+                                                                    t-field="ptal.product_template_value_ids._only_active().name" />
+                                                                <t t-if="not ptal_last">, </t>
+                                                            </t>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </t>
+                            </section>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="sh_product_custom_tab_rating">
+                            <div class="o_shop_discussion_rating">
+                                <section class="container mt16 mb16">
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-lg-8 offset-lg-2">
+                                            <t t-call="portal.message_thread">
+                                                <t t-set="object" t-value="product"/>
+                                                <t t-set="display_rating" t-value="True"/>
+                                                <t t-set="message_per_page" t-value="5"/>
+                                                <t t-set="two_columns" t-value="true"/>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="sh_product_custom_tab_desc">
+                            <div itemprop="description" t-field="product.website_description"
+                                class="oe_structure mt16" />
+                        </div>
+                        <!-- Global Tabs Contents-->
+                        <t
+                            t-foreach="request.env['sh.product.custom.tab'].search([('is_global', '=', True),('active', '=', True)])"
+                            t-as="rec">
+                            <t t-set="sh_product_custom_tab_id"
+                                t-value="'sh_custom_prod_tab_global_%s'% (rec.id)" />
+                            <div role="tabpanel" class="tab-pane fade"
+                                t-att-id="sh_product_custom_tab_id">
+                                <t t-out="rec.description" />
+                            </div>
+                        </t>
+
+                        <!-- Product Wise Tabs Contents-->
+
+                        <t t-foreach="product.sh_tab_ids" t-as="tab">
+                            <t t-if="tab.active">
+                                <div class="tab-pane fade"
+                                    t-att-id="'sh_custom_prod_tab_%s'% (tab.id)" role="tabpanel"
+                                    aria-labelledby="nav-about-tab">
+                                    <t t-out="tab.description" />
+                                </div>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- Product Tab -->
+    <template id="sh_product_custom_tab_ws_product_page" inherit_id="website_sale.product"
+        name="Product Tab">
+        <xpath expr="//div[@id='wrap']//div[@t-field='product.website_description']"
+            position="replace" />
+        <xpath expr="//section[@id='product_detail']" position="inside">
+
+            <t t-if="website.sh_tab_style" t-set="sh_website_atb_style"
+                t-value="'sh_product_custom_tab.sh_tab_style_'+website.sh_tab_style" />
+            <t t-else="" t-set="sh_website_atb_style" t-value="'sh_product_custom_tab.sh_tab_style'" />
+            <t t-call="{{ sh_website_atb_style }}" />
+        </xpath>
+    </template>
+
+</odoo>

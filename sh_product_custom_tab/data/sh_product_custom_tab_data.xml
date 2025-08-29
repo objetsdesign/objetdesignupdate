@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="website_sale.product_comment" model="ir.ui.view">
+        <field eval="False" name="active" />
+        <field eval="False" name="customize_show" />
+    </record>
+    <record id="website_sale_comparison.product_attributes_body" model="ir.ui.view">
+        <field eval="False" name="active" />
+        <field eval="False" name="customize_show" />
+    </record>
+
+    <data noupdate="1">
+        <record id="sh_product_custom_tab_1" model="sh.product.custom.tab">
+            <field name="name">Product Details</field>
+            <field name="sequence">1</field>
+            <field name="code">sh_product_custom_tab_details</field>
+            <field name="icon">fa-home</field>
+            <field name="is_global">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="sh_product_custom_tab_2" model="sh.product.custom.tab">
+            <field name="name">Discussion &amp; Rating</field>
+            <field name="sequence">2</field>
+            <field name="code">sh_product_custom_tab_rating</field>
+            <field name="icon">fa-gear</field>
+            <field name="is_global">True</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="sh_product_custom_tab_3" model="sh.product.custom.tab">
+            <field name="name">Description</field>
+            <field name="sequence">3</field>
+            <field name="code">sh_product_custom_tab_desc</field>
+            <field name="icon">fa-bars</field>
+            <field name="is_global">True</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>
